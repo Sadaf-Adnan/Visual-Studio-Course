@@ -1,92 +1,107 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Welcome Saif Kamil";
+    ViewData["Title"] = "Sadaf Adnan's Page";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>Saif Kamil’s Music Page</title>
+<style>
+    body {
+        background-color: #1a1a2e;
+        color: #e94560;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh; /* Keeps content centered in the viewport */
+    }
 
-    <style>
-        body {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            font-family: Arial, Helvetica, sans-serif;
-            color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
+    .header-container {
+        text-align: center;
+        margin-bottom: 40px;
+        margin-top: 20px;
+    }
 
-        h1 {
-            font-size: 3.5rem;
-            margin-top: 40px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: bold;
-            animation: glow 2s infinite alternate;
-        }
+    /* The h1 element styled for our JS animation */
+    #animated-header {
+        font-size: 3.5rem;
+        margin: 0;
+        font-weight: bold;
+        /* A slight transition keeps the JS scaling smooth */
+        transition: transform 0.05s linear; 
+    }
 
-        /* Animation for glowing text */
-        @@keyframes glow {
-            0% {
-                text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
-                color: #ffffff;
-            }
-            100% {
-                text-shadow: 0 0 20px #00ff9d, 0 0 40px #00ff9d;
-                color: #d1fff3;
-            }
-        }
+    .sub-header {
+        color: #a2a8d3;
+        font-size: 1.2rem;
+        margin-top: 10px;
+    }
 
-        .video-container {
-            margin-top: 40px;
-            display: flex;
-            justify-content: center;
-        }
+    /* Video wrapper for a clean border and shadow */
+    .video-container {
+        border: 4px solid #0f3460;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        background-color: #000;
+        transition: border-color 0.5s;
+    }
 
-        iframe {
-            border: 4px solid #00eaff;
-            border-radius: 12px;
-            box-shadow: 0 0 20px #00eaff;
-        }
+    .video-container:hover {
+        border-color: #e94560;
+    }
 
-        footer {
-            margin-top: 50px;
-            padding: 20px;
-            font-size: 1.1rem;
-            opacity: 0.8;
-        }
-    </style>
-</head>
+    iframe {
+        display: block;
+    }
+</style>
 
-<body>
+<div class="header-container">
+    <h1 id="animated-header">Sadaf Adnan's Vibe Zone</h1>
+    <p class="sub-header">Sit back, relax, and enjoy the music.</p>
+</div>
 
-    <h1 id="title">Welcome, Saif Kamil</h1>
+<div class="video-container">
+    <iframe width="560" 
+            height="315" 
+            src="https://www.youtube.com/embed/djV11Xbc914?autoplay=0" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+    </iframe>
+</div>
 
-    <div class="video-container">
-        <!-- Replace the YouTube link with your favorite song -->
-        <iframe width="1071" height="602" src="https://www.youtube.com/embed/ko70cExuzZM?list=RDCLAK5uy_kmPRjHDECIcuVwnKsx2Ng7fyNgFKWNJFs" title="Taylor Swift - The Fate of Ophelia (Official Music Video)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>    </div>
+<script>
+    // Grab the h1 element we want to animate
+    const header = document.getElementById('animated-header');
+    
+    // Angle variable used to calculate the sine waves
+    let angle = 0;
 
-    <footer>
-        Created with ❤️ by Saif Kamil — ASP.NET Core Web App
-    </footer>
+    function animateHeader() {
+        // Increment the angle slightly on each frame
+        angle += 0.04;
 
-    <script>
-        // JavaScript looped animation: color cycling effect on the H1
-        const title = document.getElementById("title");
-        let hue = 0;
+        // Calculate smooth RGB values using sine waves offset by different amounts
+        const red = Math.floor((Math.sin(angle) * 127) + 128);
+        const green = Math.floor((Math.sin(angle + 2) * 127) + 128);
+        const blue = Math.floor((Math.sin(angle + 4) * 127) + 128);
+        
+        // Calculate a gentle scaling pulse (between 0.95x and 1.05x normal size)
+        const scale = 1 + (Math.sin(angle * 2) * 0.05);
 
-        function animateTitle() {
-            hue = (hue + 2) % 360;
-            title.style.color = `hsl(${hue}, 90%, 70%)`;
-            requestAnimationFrame(animateTitle);
-        }
+        // Apply dynamic styles to the DOM element
+        header.style.color = `rgb(${red}, ${green}, ${blue})`;
+        header.style.textShadow = `0 0 20px rgba(${red}, ${green}, ${blue}, 0.8)`;
+        header.style.transform = `scale(${scale})`;
 
-        animateTitle();
-    </script>
+        // Tell the browser to run this function again before the next repaint
+        requestAnimationFrame(animateHeader);
+    }
 
-</body>
-</html>
+    // Start the infinite loop once the window is loaded
+    window.onload = animateHeader;
+</script>
